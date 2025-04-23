@@ -1,0 +1,15 @@
+/vendor
+/.git
+/node_modules
+/public/storage
+/storage/*.key
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.yml
+phpunit.xml
+README.md
+.gitattributes
+.styleci.yml
+.editorconfig
+.gitignore
