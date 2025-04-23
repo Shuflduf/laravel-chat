@@ -1,6 +1,7 @@
 <html>
     <body>
-        <h1>Chat</h1>
-        @dump($entries)
+        @foreach ($messages as $message)
+            {{ $message->content }}<br>
+        @endforeach
     </body>
 </html>
