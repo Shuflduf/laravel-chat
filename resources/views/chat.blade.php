@@ -1,8 +1,9 @@
 <html>
     <body>
-        <x-conversations-sidebar />
-        @foreach ($messages as $message)
-            {{ $message->content }}<br>
-        @endforeach
+        <x-main-layout>
+            @foreach ($messages as $message)
+                <p>{{ $message->content }}</p>
+            @endforeach
+        </x-main-layout>
     </body>
 </html>
