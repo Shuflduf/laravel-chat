@@ -4,9 +4,7 @@
     </head>
     <body>
         <x-main-layout>
-            @foreach ($messages as $message)
-                <p>{{ $message->content }}</p>
-            @endforeach
+            <x-conversation-area :name="$name" />
         </x-main-layout>
     </body>
 </html>

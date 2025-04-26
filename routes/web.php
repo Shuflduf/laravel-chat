@@ -15,5 +15,5 @@ Route::get('/chat/{name}', function ($name) {
     $controller = new ChatController();
     $messages = $controller->getMessages($name);
     $data = $messages->getData();
-    return view('chat', ['messages' => $data]);
+    return view('chat', ['messages' => $data, 'name' => $name]);
 });
