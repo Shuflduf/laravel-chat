@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GetConversations;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -18,25 +20,26 @@ Route::get('/chat/{name}', function ($name) {
     $messages = $controller->getMessages($name);
     $data = $messages->getData();
     return view('chat', ['messages' => $data, 'name' => $name]);
-});
+})->middleware('auth');
 
 Route::get('/auth/redirect', function () {
+    if (request()->has('intended')) {
+        session(['url.intended' => request()->get('intended')]);
+    }
     return Socialite::driver('github')->redirect();
-});
+})->name('login');
 
 Route::get('/auth/callback', function () {
-    $user = Socialite::driver('github')->user();
-    // Handle the authenticated user
-    // For example, you can store the user in the session or database
-    // log the user information
-    Log::info('User authenticated', ['user' => $user]);
-    return redirect('/signup')->with('user', $user);
-});
+    $githubUser = Socialite::driver('github')->user();
+    Log::info('GitHub User: ', (array) $githubUser);
 
-Route::get('/signup', function () {
-    $user = session('user');
-    if (!$user) {
-        return redirect('/auth/redirect');
-    }
-    return view('signup', ['user' => $user]);
+    $user = User::updateOrCreate(
+        [
+            'name' => $githubUser->name ?? $githubUser->nickname,
+            'email' => $githubUser->email,
+        ]
+    );
+
+    Auth::login($user);
+    return redirect(session()->pull('url.intended', '/'));
 });
