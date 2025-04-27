@@ -1,6 +1,6 @@
 <div class="flex flex-col h-full">
     <h1 class="text-2xl font-bold mb-4">{{ $name }}</h1>
-    <div class="flex-1 overflow-y-auto max-h-[calc(100vh-2rem)]">
+    <div id="messages" class="flex-1 overflow-y-auto max-h-[calc(100vh-2rem)]">
         @foreach ($messages as $message)
             <div class="mb-4">
                 <div class="text-gray-600 font-semibold">
@@ -20,3 +20,7 @@
         </form>
     </div>
 </div>
+
+<script>
+document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+</script>
