@@ -19,7 +19,8 @@ Route::get('/chat/{name}', function ($name) {
     $controller = new ChatController();
     $messages = $controller->getMessages($name);
     $data = $messages->getData();
-    return view('chat', ['messages' => $data, 'name' => $name]);
+
+    return view('chat', ['messages' => $data, 'name' => $name, 'user' => Auth::user()]);
 })->middleware('auth');
 
 Route::get('/auth/redirect', function () {
@@ -34,12 +35,15 @@ Route::get('/auth/callback', function () {
     Log::info('GitHub User: ', (array) $githubUser);
 
     $user = User::updateOrCreate(
+        ['email' => $githubUser->email],
         [
             'name' => $githubUser->name ?? $githubUser->nickname,
             'email' => $githubUser->email,
         ]
     );
 
-    Auth::login($user);
+    Auth::login($user, true);
     return redirect(session()->pull('url.intended', '/'));
 });
+
+Route::post("/messages", [ChatController::class, 'newMessage'])->middleware('auth')->name("messages.store");

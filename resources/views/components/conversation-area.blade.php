@@ -1,6 +1,6 @@
-<div class="relative h-full p-4 pt-0 w-full">
-    <div class="overflow-y-auto pb-16">
-        <h1 class="text-2xl font-bold mb-4">Chat with ME</h1>
+<div class="flex flex-col h-full">
+    <h1 class="text-2xl font-bold mb-4">{{ $name }}</h1>
+    <div class="flex-1 overflow-y-auto max-h-[calc(100vh-2rem)]">
         @foreach ($messages as $message)
             <div class="mb-4">
                 <div class="text-gray-600 font-semibold">
@@ -12,7 +12,11 @@
             </div>
         @endforeach
     </div>
-    <div class="absolute bottom-0 left-0 right-0 w-full">
-        <input type="text" class="border rounded-lg p-4 w-full bg-slate-500 text-white" placeholder="Message {{ $name }}" />
+    <div class="mt-auto">
+        <form method="POST" action="{{ route('messages.store') }}" class="w-full">
+            @csrf
+            <input type="hidden" name="conversation_id" value="1">
+            <input type="text" name="message" class="border rounded-lg p-4 w-full bg-slate-500 text-white" placeholder="Message {{ $name }}" required>
+        </form>
     </div>
 </div>
