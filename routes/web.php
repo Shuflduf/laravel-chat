@@ -9,7 +9,13 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
-    Log::error('APP_URL', [config('app.url')]);
+    Log::error('URL Debug', [
+        'raw_app_url' => env('APP_URL'),
+        'config_app_url' => config('app.url'),
+        'request_url' => request()->getSchemeAndHttpHost(),
+        'request_full_url' => request()->fullUrl(),
+        'is_secure' => request()->secure(),
+    ]);
 
     $controller = new GetConversations();
     $conversations = $controller->getConversations();
