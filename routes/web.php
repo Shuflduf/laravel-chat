@@ -47,3 +47,4 @@ Route::get('/auth/callback', function () {
 });
 
 Route::post("/messages", [ChatController::class, 'newMessage'])->middleware('auth')->name("messages.store");
+
