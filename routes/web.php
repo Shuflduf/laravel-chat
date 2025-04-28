@@ -35,7 +35,9 @@ Route::get('/auth/redirect', function () {
     if (request()->has('intended')) {
         session(['url.intended' => request()->get('intended')]);
     }
-    return Socialite::driver('github')->redirect();
+    return Socialite::driver('github')
+        ->with(['redirect_uri' => 'https://dev-shuflduf-laravel-chat.vercel.app/auth/callback'])
+        ->redirect();
 })->name('login');
 
 Route::get('/auth/callback', function () {
